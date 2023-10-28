@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - includeAll:
+      path: main/resources/db.changelog/
