@@ -1,4 +1,4 @@
-package com.spoofy.aeroclub.exception.model;
+package com.spoofy.aeroclub.common.exception.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

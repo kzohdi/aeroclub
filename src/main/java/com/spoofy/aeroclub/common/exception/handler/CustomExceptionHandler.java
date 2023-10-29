@@ -1,13 +1,15 @@
-package com.spoofy.aeroclub.exception.handler;
+package com.spoofy.aeroclub.common.exception.handler;
 
-import com.spoofy.aeroclub.exception.NotFoundException;
-import com.spoofy.aeroclub.exception.ServerException;
-import com.spoofy.aeroclub.exception.model.ExceptionResponse;
+import com.spoofy.aeroclub.common.exception.NotFoundException;
+import com.spoofy.aeroclub.common.exception.ServerException;
+import com.spoofy.aeroclub.common.exception.model.ExceptionResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
@@ -15,10 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class ExceptionHandler {
+@Slf4j
+public class CustomExceptionHandler {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> validationExceptionHandling(MethodArgumentNotValidException exception, WebRequest request) {
+        log.error("Method argument not valid", exception);
         return new ResponseEntity<>(new ExceptionResponse(new Date(), getValidationErrors(exception), request.getDescription(false)), HttpStatus.BAD_REQUEST);
     }
 
@@ -32,18 +36,21 @@ public class ExceptionHandler {
         return validationErrors;
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> notFoundExceptionHandling(Exception exception, WebRequest request) {
+        log.error("Not found exception", exception);
         return new ResponseEntity<>(new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false)), HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(ServerException.class)
+    @ExceptionHandler(ServerException.class)
     public ResponseEntity<?> serverExceptionHandling(Exception exception, WebRequest request) {
+        log.error("Server exception", exception);
         return new ResponseEntity<>(new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandling(Exception exception, WebRequest request) {
+        log.error("Generic exception", exception);
         return new ResponseEntity<>(new ExceptionResponse(new Date(), exception.getMessage(), request.getDescription(false)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

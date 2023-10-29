@@ -1,4 +1,4 @@
-package com.spoofy.aeroclub.exception;
+package com.spoofy.aeroclub.common.exception;
 
 public class NotFoundException extends RuntimeException {
 
