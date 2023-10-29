@@ -21,6 +21,6 @@ public class PlaneRepositoryImpl implements PlaneRepository {
 
     @Override
     public Plane findPlane(String registration) {
-        return planeMapper.toPlane(planeJpaRepository.findByRegistration(registration).orElse(null));
+        return planeMapper.toPlane(planeJpaRepository.findByRegistration(registration));
     }
 }
