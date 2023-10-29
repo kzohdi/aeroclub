@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-plane
+      author: spoofy
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+              - column:
+                  name: registration
+                  type: varchar(255)
+              - column:
+                  name: brand
+                  type: varchar(255)
+              - column:
+                  name: model
+                  type: varchar(255)
+              - column:
+                  name: nb_seats
+                  type: number
+            tableName: plane
+
+  - changeSet:
+      id: add-unique-constraint
+      author: spoofy
+      changes:
+        - addUniqueConstraint:
+            columnNames: registration
+            constraintName: const_unique_registration
+            tableName: plane
+            validate: true
